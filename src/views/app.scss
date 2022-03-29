@@ -1,0 +1,127 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+@import './../assets/style/variable.scss';
+
+*{
+   margin: 0;
+   padding: 0;
+   box-sizing: border-box;
+}
+
+body {
+  background-color: $dark-blue;
+  font-size: 16px;
+  font-family: $font;
+  color: $white;
+}
+
+ul,ol {
+  list-style: none;
+}
+
+a{
+  color: $white;
+  text-decoration: none;
+}
+
+.container {
+  max-width: 1380px;
+  margin: 0 auto;
+  padding: 0 25px;
+}
+
+
+.spin-btn{
+  background: linear-gradient(42deg, #0D3B94, #0050BE);
+  color: $white;
+  font-size: 16px;
+  border: none;
+  padding: 12px 25px;
+  border-radius: 42px;
+  font-weight: 500;
+  cursor: pointer;
+  @media screen and (max-width:767px) {
+    padding: 8px 14px;
+    border-radius: 4px;
+  }
+   &.outline{
+     background: transparent;
+      color: $white;
+   }
+   &.solid {
+     background: $white;
+      border: 1px solid $white;
+   }
+}
+
+.spin-card{
+  border: none;
+  background: linear-gradient(to bottom, #020F29, #071C44);
+  border-radius: 18px;
+  padding: 45px 15px;
+  text-align: center;
+  .title {
+    color: $white;
+    font-size: 16px;
+    font-weight: 500;
+    display: block;
+  }
+  .token-amount{
+    display: block;
+    font-size: 50px;
+    font-weight: 600;
+    margin: 0 0 30px;
+  }
+  .symbol {
+    color: $white;
+    opacity: 0.5;
+    display: block;
+    margin: 0 0 35px;
+    font-size: 16px;
+  }
+  .usd-amount {
+    display: block;
+    font-size: 22px;
+  }
+  &.light {
+    background: linear-gradient(to bottom, #092A68, #081D46);
+  }
+}
+
+.title {
+  font-size: 50px;
+  font-weight: 500;
+  margin: 0 0 30px;
+  @media screen and (max-width:767px) {
+    font-size: 26px;
+  }
+}
+
+.para{
+   margin: 0 0 30px;
+   color: $white;
+   opacity: 0.5;
+}
+
+@keyframes rotation {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(359deg);
+  }
+}
+
+
+input[type="number"]::-webkit-inner-spin-button, 
+input[type="number"]::-webkit-outer-spin-button { 
+  -webkit-appearance: none; 
+  margin: 0; 
+}
+
+input[type="number"] {
+    -moz-appearance: textfield;
+}
+input[type="number"]:hover,
+input[type="number"]:focus {
+    -moz-appearance: number-input;
+}
