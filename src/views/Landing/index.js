@@ -8,6 +8,7 @@ import ReactApexChart from "react-apexcharts"
 import { useEffect } from 'react'
 import { getAvaxPrice, getContractData } from '../../utils/web3-helper'
 import { useSelector } from 'react-redux'
+import { notification } from '../../component/Notification'
 
 export default function Landing() {
   const state = useSelector(state=>state?.web3Reducer)
@@ -175,12 +176,27 @@ export default function Landing() {
               <h2 className='title'>REFERRAL</h2>
               <p className='para'>Referral rewards are paid directly to your wallet  <strong> Your Ref Link:</strong>
               </p>
+              {
+                state?.userAddress &&
+                  <>
+                  <p className='para'>{`https://thewheelofreturns.io/?ref=${state?.userAddress}`}</p>
+                  <button
+                   className='spin-btn'
+                   onClick={() => {
+                    const text = `https://thewheelofreturns.io/?ref=${state?.userAddress}`;
+                    navigator.clipboard.writeText(text);
+                    notification('success','Copied successfully')
+                  }}
+                   >Copy</button>
+               </>
+              }
+
             </div>
             <div className='spin-card'>
               <span className='title'>Your referral rewards</span>
               <span className='token-amount'>{state?.userData?.totalRef?.toFixed(2) || 0}</span>
               <span className='symbol'>AVAX</span>
-              <span className='token-amount'>$ {(state?.userData?.totalRef?.toFixed(2) * state?.avaxPrice).toFixed(2) || 0}</span>
+              <span className='usd-amount'>$ {(state?.userData?.totalRef?.toFixed(2) * state?.avaxPrice).toFixed(2) || 0}</span>
             </div>
           </div>
         </div>
