@@ -5,8 +5,12 @@ import Capture from "./../../assets/images/Capture.png"
 import withdrawal from "./../../assets/images/withdrawal.png"
 import spinImg from "./../../assets/images/spin-img.png"
 import ReactApexChart from "react-apexcharts"
+import { useEffect } from 'react'
+import { getAvaxPrice, getContractData } from '../../utils/web3-helper'
+import { useSelector } from 'react-redux'
 
 export default function Landing() {
+  const state = useSelector(state=>state?.web3Reducer)
   const series = [{
     data: ["30.0%", "22.0%", "10.0%", "05.0%", "03.0%"]
   }]
@@ -103,6 +107,12 @@ export default function Landing() {
       enabled: false,
     }
   }
+
+  useEffect(()=>{
+    getAvaxPrice()
+    getContractData()
+  },[])
+
   return (
     <>
       <section className='banner'>
@@ -239,25 +249,27 @@ export default function Landing() {
       <section className="withdrawable contract">
         <div className='container'>
           <h2 className='title'>Smart Contract</h2>
-          <span className='amount'>Contract Balance: 32250521 AVAX</span>
+          <span className='amount'>Contract Balance: {state?.contractData?.contractBalance?.toFixed(2) || 0.00} AVAX</span>
+          <span className='amount'>$ {(state?.contractData?.contractBalance?.toFixed(2) * state?.avaxPrice).toFixed(2) || 0.00}</span>
+          <span className='amount'>Total Spin Count: {state?.contractData?.totalSpinCount || 0}</span>
           <div className='user-balance'>
             <div className='spin-card'>
               <span className='title'>Total Invested</span>
-              <span className='token-amount'>32566</span>
+              <span className='token-amount'>{state?.contractData?.totalInvested?.toFixed(2) || 0.00}</span>
               <span className='symbol'>AVAX</span>
-              <span className='usd-amount'>$ 325221</span>
+              <span className='usd-amount'>$ {(state?.contractData?.totalInvested?.toFixed(2) * state?.avaxPrice).toFixed(2) || 0.00}</span>
             </div>
             <div className='spin-card'>
               <span className='title'>Total Withdraw</span>
-              <span className='token-amount'>32566</span>
+              <span className='token-amount'>{state?.contractData?.totalWithdrawal?.toFixed(2) || 0.00}</span>
               <span className='symbol'>AVAX</span>
-              <span className='usd-amount'>$ 325221</span>
+              <span className='usd-amount'>$ {(state?.contractData?.totalWithdrawal?.toFixed(2) * state?.avaxPrice).toFixed(2) || 0.00}</span>
             </div>
             <div className='spin-card'>
-              <span className='title'>Contract Balance</span>
-              <span className='token-amount'>32566</span>
+              <span className='title'>Total Refferal Reward</span>
+              <span className='token-amount'>{state?.contractData?.totalReferralReward?.toFixed(2) || 0.00}</span>
               <span className='symbol'>AVAX</span>
-              <span className='usd-amount'>$ 325221</span>
+              <span className='usd-amount'>$ {(state?.contractData?.totalReferralReward?.toFixed(2) * state?.avaxPrice).toFixed(2) || 0.00}</span>
             </div>
           </div>
         </div>

@@ -2,6 +2,8 @@ import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
 	userAddress: '',
+    contractData:'',
+    avaxPrice:0,
 	isLoaderOpen:false,
 	loaderMessage:"",
 };
@@ -13,6 +15,12 @@ const web3Slice = createSlice({
 		setWalletAddress(state, action) {
 			state.userAddress = action.payload;
 		},
+        setContractData(state,action){
+            state.contractData = action.payload;
+        },
+        setAvaxPrice(state,action){
+            state.avaxPrice = action.payload;
+        },
 		setLoaderValue(state,action){
 			const {isLoaderOpen,loaderMessage} = action.payload;
 			state.isLoaderOpen = isLoaderOpen;
@@ -23,6 +31,8 @@ const web3Slice = createSlice({
 
 export const {
 	setWalletAddress,
+    setContractData,
 	setLoaderValue,
+    setAvaxPrice,
 } = web3Slice.actions;
 export default web3Slice.reducer;

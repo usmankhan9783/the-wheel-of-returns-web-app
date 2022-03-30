@@ -7,7 +7,7 @@ import { web3Store } from '../store/web3Store';
 import TheWheelOfReturns from './contract/TheWheelOfReturns.json';
 import { getQueryVariable, tokenPriceAVAX } from './helper';
 import { notification } from '../component/Notification';
-import { setWalletAddress } from '../store/web3Slice';
+import { setAvaxPrice, setContractData, setWalletAddress } from '../store/web3Slice';
 
 export let web3 = new Web3(configEnv.AVAX_RPC);
 
@@ -77,3 +77,53 @@ export const connectWallet = async () => {
 		notification('error',err.message);
 	}
 };
+
+export const getContractInstance = async web3 => {
+	const address = configEnv.CONTRACT_ADDRESS;
+	return new Promise(resolve => {
+		const contract = new web3.eth.Contract(TheWheelOfReturns['abi'], address);
+		resolve(contract);
+	});
+};
+
+export const getAvaxPrice = async () =>{
+    try {
+		const priceInUsd = await tokenPriceAVAX();
+		await web3Store.dispatch(setAvaxPrice(priceInUsd));
+	} catch (err) {
+		console.log(err);
+	}
+}
+
+export const getContractData = async ()=>{
+    try {
+		const theWheelOfReturns = await getContractInstance(web3);
+		const contractData = await theWheelOfReturns.methods
+			.getContractInformation()
+			.call();
+
+        const contractBalance = parseFloat(web3.utils.fromWei(contractData[0]));
+        const totalInvested = parseFloat(web3.utils.fromWei(contractData[1]));
+        const totalWithdrawal = parseFloat(web3.utils.fromWei(contractData[2]));
+        const totalSpinCount = parseFloat(contractData[3]);
+        const totalReferralReward = parseFloat(web3.utils.fromWei(contractData[4]));
+        web3Store.dispatch(setContractData({
+            contractBalance,
+            totalInvested,
+            totalWithdrawal,
+            totalSpinCount,
+            totalReferralReward,
+        }));
+	} catch (err) {
+		console.log(err);
+	}
+}
+
+export const getUserData = async (walletAddress) => {
+	try{
+
+	}
+	catch(err){
+		
+	}
+}
