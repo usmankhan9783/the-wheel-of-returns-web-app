@@ -48,7 +48,7 @@ export const connectWallet = async () => {
 			provider.on('accountsChanged', async accounts => {
 				console.log('Accounts', accounts);
 				web3Store.dispatch(setWalletAddress(accounts[0]));
-				await getUserData(accounts[0]);
+				await getUserData();
 				await getUserDeposits();
 			});
 
@@ -67,7 +67,7 @@ export const connectWallet = async () => {
 			console.log('Acount is', accounts[0]);
 
 			web3Store.dispatch(setWalletAddress(accounts[0]));
-			await getUserData(accounts[0]);
+			await getUserData();
 			await getUserDeposits();
 		} else {
 			console.log('Already connected');
@@ -97,30 +97,50 @@ export const getAvaxPrice = async () =>{
 
 export const getContractData = async ()=>{
     try {
+		let state = web3Store.getState();
+		if(!state?.web3Reducer?.avaxPrice){
+			await getAvaxPrice();
+			state = web3Store.getState();
+		}
+		
 		const theWheelOfReturns = await getContractInstance(web3);
 		const contractData = await theWheelOfReturns.methods
 			.getContractInformation()
 			.call();
 
-        const contractBalance = parseFloat(web3.utils.fromWei(contractData[0]));
+		const contractBalance = parseFloat(web3.utils.fromWei(contractData[0]));
+		const contractBalanceUsd = parseFloat(web3.utils.fromWei(contractData[0])) * state?.web3Reducer?.avaxPrice;
         const totalInvested = parseFloat(web3.utils.fromWei(contractData[1]));
+		const totalInvestedUsd = parseFloat(web3.utils.fromWei(contractData[1])) * state?.web3Reducer?.avaxPrice;
         const totalWithdrawal = parseFloat(web3.utils.fromWei(contractData[2]));
+		const totalWithdrawalUsd = parseFloat(web3.utils.fromWei(contractData[2])) * state?.web3Reducer?.avaxPrice;
         const totalSpinCount = parseFloat(contractData[3]);
         const totalReferralReward = parseFloat(web3.utils.fromWei(contractData[4]));
+		const totalReferralRewardUsd = parseFloat(web3.utils.fromWei(contractData[4])) * state?.web3Reducer?.avaxPrice;
         web3Store.dispatch(setContractData({
             contractBalance,
+			contractBalanceUsd,
             totalInvested,
+			totalInvestedUsd,
             totalWithdrawal,
+			totalWithdrawalUsd,
             totalSpinCount,
             totalReferralReward,
+			totalReferralRewardUsd,
         }));
 	} catch (err) {
 		console.log(err);
 	}
 }
 
-export const getUserData = async (walletAddress) => {
+export const getUserData = async () => {
 	try{
+		let state = web3Store.getState();
+		if(!state?.web3Reducer?.avaxPrice){
+			await getAvaxPrice();
+			state = web3Store.getState();
+		}
+		const walletAddress = state?.web3Reducer?.userAddress;
 		const theWheelOfReturns = await getContractInstance(web3);
 		const investorData = await theWheelOfReturns
 			.methods
@@ -130,15 +150,18 @@ export const getUserData = async (walletAddress) => {
 		.methods
 		.getUserDividends(walletAddress)
 		.call();
-
 		const userData={
 			investmentCount:parseFloat(investorData?.investmentCount),
 			investmentTime:parseFloat(investorData?.investmentTime),
 			lastWithdrawDate:parseFloat(investorData?.lastWithdrawDate),
 			totalInvestment:parseFloat(web3.utils.fromWei(investorData?.totalInvestment,"ether")),
+			totalInvestmentUsd:parseFloat(web3.utils.fromWei(investorData?.totalInvestment,"ether"))*state?.web3Reducer?.avaxPrice,
 			totalRef:parseFloat(web3.utils.fromWei(investorData?.totalRef,"ether")),
+			totalRefUsd:parseFloat(web3.utils.fromWei(investorData?.totalRef,"ether"))*state?.web3Reducer?.avaxPrice,
 			totalWithdraw:parseFloat(web3.utils.fromWei(investorData?.totalWithdraw,"ether")),
+			totalWithdrawUsd:parseFloat(web3.utils.fromWei(investorData?.totalWithdraw,"ether"))*state?.web3Reducer?.avaxPrice,
 			dividend:parseFloat(web3.utils.fromWei(dividend,"ether")), 
+			dividendUsd:parseFloat(web3.utils.fromWei(dividend,"ether"))*state?.web3Reducer?.avaxPrice, 
 		}
 
 		await web3Store.dispatch(setUserData(userData))
@@ -150,6 +173,7 @@ export const getUserData = async (walletAddress) => {
 
 export const investHandler = async (value)=>{
 	try {
+		debugger
 		const state = web3Store.getState();
 		const userAddress = state?.web3Reducer?.userAddress;
 		if (!userAddress) {
@@ -157,6 +181,11 @@ export const investHandler = async (value)=>{
 			return;
 		}
 
+		if(value<0.1){
+			notification('error',"Cannot invest less than 0.1 AVAX");
+			return;
+		}
+		debugger
 		web3Store.dispatch(
 			setLoaderValue({
 				isLoaderOpen: true,
@@ -167,12 +196,13 @@ export const investHandler = async (value)=>{
 		const theWheelOfReturns = await getContractInstance(web3);
 
 		const valueInWei = web3.utils.toWei(value.toString(), 'ether');
-
+		debugger
 		let ref = getQueryVariable('ref');
 		if (!web3.utils.isAddress(ref)) {
 			ref = configEnv['REF_ADDRESS'];
 		}
 
+		debugger
 		const trx = await theWheelOfReturns.methods.invest(ref).send({
 			from: userAddress,
 			value: valueInWei,
@@ -204,6 +234,53 @@ export const investHandler = async (value)=>{
 		notification('error',err.message);
 	}
 }
+
+export const withdrawHandler = async () => {
+	try {
+		const state = web3Store.getState();
+		const userAddress = state?.web3Reducer?.userAddress;
+		if (!userAddress) {
+			// alert('Please connect your wallet');
+			notification('error','Please connect your wallet');
+			return;
+		}
+		web3Store.dispatch(
+			setLoaderValue({
+				isLoaderOpen: true,
+				loaderMessage:
+					'Please wait, we are processing your transaction',
+			})
+		);
+		const theWheelOfReturns = await getContractInstance(web3);
+
+		const trx = await theWheelOfReturns.methods.withdraw().send({
+			from: userAddress,
+			maxPriorityFeePerGas: null,
+			maxFeePerGas: null,
+		});
+
+		getContractData ();
+		getUserData();
+		// alert('trx successful', trx.transactionHash);
+		web3Store.dispatch(
+			setLoaderValue({
+				isLoaderOpen: false,
+				loaderMessage: '',
+			})
+		);
+		notification('success','Withdraw successful');
+	} catch (err) {
+		console.log(err);
+		// alert(err.message);
+		web3Store.dispatch(
+			setLoaderValue({
+				isLoaderOpen: false,
+				loaderMessage: '',
+			})
+		);
+		notification('error',err.message);
+	}
+};
 
 export const getUserDeposits = async () => {
 	try {
