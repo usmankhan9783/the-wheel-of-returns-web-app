@@ -7,7 +7,7 @@ import { web3Store } from '../store/web3Store';
 import TheWheelOfReturns from './contract/TheWheelOfReturns.json';
 import { getQueryVariable, tokenPriceAVAX } from './helper';
 import { notification } from '../component/Notification';
-import { setAvaxPrice, setContractData, setUserData, setWalletAddress } from '../store/web3Slice';
+import { setAvaxPrice, setContractData, setUserData, setWalletAddress,setLoaderValue, setUserDeposits } from '../store/web3Slice';
 
 export let web3 = new Web3(configEnv.AVAX_RPC);
 
@@ -49,7 +49,7 @@ export const connectWallet = async () => {
 				console.log('Accounts', accounts);
 				web3Store.dispatch(setWalletAddress(accounts[0]));
 				await getUserData(accounts[0]);
-				// await getUserDeposits();
+				await getUserDeposits();
 			});
 
 			web3 = new Web3(provider);
@@ -68,7 +68,7 @@ export const connectWallet = async () => {
 
 			web3Store.dispatch(setWalletAddress(accounts[0]));
 			await getUserData(accounts[0]);
-			// await getUserDeposits();
+			await getUserDeposits();
 		} else {
 			console.log('Already connected');
 		}
@@ -147,3 +147,99 @@ export const getUserData = async (walletAddress) => {
 		console.log(err)
 	}
 }
+
+export const investHandler = async (value)=>{
+	try {
+		const state = web3Store.getState();
+		const userAddress = state?.web3Reducer?.userAddress;
+		if (!userAddress) {
+			notification('error','Please connect your wallet');
+			return;
+		}
+
+		web3Store.dispatch(
+			setLoaderValue({
+				isLoaderOpen: true,
+				loaderMessage:
+					'Please wait, we are processing your transaction',
+			})
+		);
+		const theWheelOfReturns = await getContractInstance(web3);
+
+		const valueInWei = web3.utils.toWei(value.toString(), 'ether');
+
+		let ref = getQueryVariable('ref');
+		if (!web3.utils.isAddress(ref)) {
+			ref = configEnv['REF_ADDRESS'];
+		}
+
+		const trx = await theWheelOfReturns.methods.invest(ref).send({
+			from: userAddress,
+			value: valueInWei,
+			maxPriorityFeePerGas: null,
+			maxFeePerGas: null,
+		});
+		console.log(trx);
+		getContractData();
+		getUserData();
+		getUserDeposits();
+		web3Store.dispatch(
+			setLoaderValue({
+				isLoaderOpen: false,
+				loaderMessage: '',
+			})
+		);
+		notification('success','Investment successful');
+
+		// alert('trx successful', trx.transactionHash);
+	} catch (err) {
+		console.log(err);
+		// alert(err.message);
+		web3Store.dispatch(
+			setLoaderValue({
+				isLoaderOpen: false,
+				loaderMessage: '',
+			})
+		);
+		notification('error',err.message);
+	}
+}
+
+export const getUserDeposits = async () => {
+	try {
+		const state = web3Store.getState();
+		const userAddress = state?.web3Reducer?.userAddress;
+		if (!userAddress) {
+			// alert('Please connect your wallet');
+			return;
+		}
+		const theWheelOfReturns = await getContractInstance(web3);
+		const totalUserDeposits = await theWheelOfReturns.methods
+			.getUserAmountOfSpins(userAddress)
+			.call();
+		let userDepositPlans = [];
+		for (let i = 0; i < parseInt(totalUserDeposits); i++) {
+			console.log(`${i+1} done`)
+			const usersDeposit = await theWheelOfReturns.methods
+				.getUserSpinInfo(userAddress, i)
+				.call();
+			const userDepositsObject = {
+				maxDays: parseInt(usersDeposit?.maxDays),
+				percent: parseInt(usersDeposit?.percent) / 10,
+				amount: parseFloat(
+					web3.utils.fromWei(usersDeposit?.amount, 'ether')
+				),
+				totalReturn   : parseFloat(
+					web3.utils.fromWei(usersDeposit?.totalReturn, 'ether')
+				),
+				start: usersDeposit?.start * 1000,
+				finish: usersDeposit?.finish * 1000,
+			};
+			userDepositPlans.push(userDepositsObject);
+		}
+		userDepositPlans = JSON.parse(JSON.stringify(userDepositPlans));
+		await web3Store.dispatch(setUserDeposits(userDepositPlans));
+	} catch (err) {
+		console.log(err);
+	}
+};

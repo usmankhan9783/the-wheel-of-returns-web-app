@@ -7,6 +7,7 @@ const initialState = {
     avaxPrice:0,
 	isLoaderOpen:false,
 	loaderMessage:"",
+	userDeposits:"",
 };
 
 const web3Slice = createSlice({
@@ -25,6 +26,9 @@ const web3Slice = createSlice({
         setAvaxPrice(state,action){
             state.avaxPrice = action.payload;
         },
+		setUserDeposits(state,action){
+			state.userDeposits = action.payload;
+		},
 		setLoaderValue(state,action){
 			const {isLoaderOpen,loaderMessage} = action.payload;
 			state.isLoaderOpen = isLoaderOpen;
@@ -38,6 +42,7 @@ export const {
     setContractData,
     setUserData,
 	setLoaderValue,
+	setUserDeposits,
     setAvaxPrice,
 } = web3Slice.actions;
 export default web3Slice.reducer;
