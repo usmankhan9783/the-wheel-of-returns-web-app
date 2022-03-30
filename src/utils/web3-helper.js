@@ -173,7 +173,6 @@ export const getUserData = async () => {
 
 export const investHandler = async (value)=>{
 	try {
-		debugger
 		const state = web3Store.getState();
 		const userAddress = state?.web3Reducer?.userAddress;
 		if (!userAddress) {
@@ -185,7 +184,6 @@ export const investHandler = async (value)=>{
 			notification('error',"Cannot invest less than 0.1 AVAX");
 			return;
 		}
-		debugger
 		web3Store.dispatch(
 			setLoaderValue({
 				isLoaderOpen: true,
@@ -196,13 +194,11 @@ export const investHandler = async (value)=>{
 		const theWheelOfReturns = await getContractInstance(web3);
 
 		const valueInWei = web3.utils.toWei(value.toString(), 'ether');
-		debugger
 		let ref = getQueryVariable('ref');
 		if (!web3.utils.isAddress(ref)) {
 			ref = configEnv['REF_ADDRESS'];
 		}
 
-		debugger
 		const trx = await theWheelOfReturns.methods.invest(ref).send({
 			from: userAddress,
 			value: valueInWei,
