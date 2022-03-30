@@ -1,0 +1,100 @@
+@import './../../assets/style/variable.scss';
+
+.popup-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 20;
+  // display: none;
+  font-family: 'Nunito Sans', sans-serif;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  &.isOpen {
+    display: flex;
+    pointer-events: all;
+    background: hsla(0, 0%, 40%, .6);
+    .modal {
+      animation: blowUpModal .5s cubic-bezier(0.165, 0.840, 0.440, 1.000) forwards;
+      .modal__details {
+        animation:blowUpContent .5s cubic-bezier(0.165, 0.840, 0.440, 1.000) forwards;
+      }
+    }
+  }
+  .modal {
+    max-width: 800px;
+    border-radius: 8px;
+    width: 100%;
+    border-radius: 40px;
+    color: hsl(0, 0%, 100%);
+    transform:scale(0);
+    background: linear-gradient(to bottom, #6B0B66, #3C1EA1);
+    box-shadow: .4rem .4rem 2.4rem .2rem hsla(236, 50%, 50%, 0.3);
+    position: relative;
+    overflow: hidden;
+    animation: blowUpModalTwo .5s cubic-bezier(0.165, 0.840, 0.440, 1.000) forwards;
+    .modal__details {
+      text-align: center;
+      padding: 8rem 2rem 4rem;
+      background: url('./../../assets/images/congrats-bg.png') no-repeat center;
+      background-size: cover;
+      animation: blowUpContentTwo .5s cubic-bezier(0.165, 0.840, 0.440, 1.000) forwards;
+    }
+    .modal__title {
+      padding: 50px 0 0;
+    }
+    .modal__description {
+      margin-top: 2rem;
+      font-size: 1.7rem;
+      color: $white;
+    }
+  }
+}
+
+@keyframes blowUpContent {
+  0% {
+    transform:scale(0);
+    opacity:1;
+  }
+  99.9% {
+    transform:scale(2);
+    opacity:0;
+  }
+  100% {
+    transform:scale(1);
+  }
+}
+
+@keyframes blowUpContentTwo {
+  0% {
+    transform:scale(2);
+    opacity:0;
+  }
+  100% {
+    transform:scale(1);
+    opacity:1;
+  }
+}
+
+@keyframes blowUpModal {
+  0% {
+    transform:scale(0);
+  }
+  100% {
+    transform:scale(1);
+  }
+}
+
+@keyframes blowUpModalTwo {
+  0% {
+    transform:scale(1);
+    opacity:1;
+  }
+  100% {
+    transform:scale(0);
+    opacity:0;
+  }
+}
