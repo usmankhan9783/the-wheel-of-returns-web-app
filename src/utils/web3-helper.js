@@ -7,7 +7,7 @@ import { web3Store } from '../store/web3Store';
 import TheWheelOfReturns from './contract/TheWheelOfReturns.json';
 import { getQueryVariable, tokenPriceAVAX } from './helper';
 import { notification } from '../component/Notification';
-import { setAvaxPrice, setContractData, setWalletAddress } from '../store/web3Slice';
+import { setAvaxPrice, setContractData, setUserData, setWalletAddress } from '../store/web3Slice';
 
 export let web3 = new Web3(configEnv.AVAX_RPC);
 
@@ -48,7 +48,7 @@ export const connectWallet = async () => {
 			provider.on('accountsChanged', async accounts => {
 				console.log('Accounts', accounts);
 				web3Store.dispatch(setWalletAddress(accounts[0]));
-				// await getUserData();
+				await getUserData(accounts[0]);
 				// await getUserDeposits();
 			});
 
@@ -67,7 +67,7 @@ export const connectWallet = async () => {
 			console.log('Acount is', accounts[0]);
 
 			web3Store.dispatch(setWalletAddress(accounts[0]));
-			// await getUserData();
+			await getUserData(accounts[0]);
 			// await getUserDeposits();
 		} else {
 			console.log('Already connected');
@@ -121,9 +121,29 @@ export const getContractData = async ()=>{
 
 export const getUserData = async (walletAddress) => {
 	try{
+		const theWheelOfReturns = await getContractInstance(web3);
+		const investorData = await theWheelOfReturns
+			.methods
+			.investors(walletAddress)
+			.call();
+		const dividend = await theWheelOfReturns
+		.methods
+		.getUserDividends(walletAddress)
+		.call();
 
+		const userData={
+			investmentCount:parseFloat(investorData?.investmentCount),
+			investmentTime:parseFloat(investorData?.investmentTime),
+			lastWithdrawDate:parseFloat(investorData?.lastWithdrawDate),
+			totalInvestment:parseFloat(web3.utils.fromWei(investorData?.totalInvestment,"ether")),
+			totalRef:parseFloat(web3.utils.fromWei(investorData?.totalRef,"ether")),
+			totalWithdraw:parseFloat(web3.utils.fromWei(investorData?.totalWithdraw,"ether")),
+			dividend:parseFloat(web3.utils.fromWei(dividend,"ether")), 
+		}
+
+		await web3Store.dispatch(setUserData(userData))
 	}
 	catch(err){
-		
+		console.log(err)
 	}
 }

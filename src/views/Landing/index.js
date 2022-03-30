@@ -148,20 +148,22 @@ export default function Landing() {
       <section className="withdrawable">
         <div className='container'>
           <h2 className='title'>Withdrawable</h2>
-          <span className='amount'>32523 AVAX</span>
+          <span className='amount'>{state?.userData?.dividend?.toFixed(2) || 0} AVAX</span>
+          <span className='amount'>$ {(state?.userData?.dividend?.toFixed(2) * state?.avaxPrice).toFixed(2) || 0}</span>
           <button className='spin-btn'>Withdraw</button>
+          
           <div className='user-balance'>
             <div className='spin-card light'>
               <span className='title'>Total Invested</span>
-              <span className='token-amount'>32566</span>
+              <span className='token-amount'>{state?.userData?.totalInvestment?.toFixed(2) || 0}</span>
               <span className='symbol'>AVAX</span>
-              <span className='usd-amount'>$ 325221</span>
+              <span className='usd-amount'>$ {(state?.userData?.totalInvestment?.toFixed(2) * state?.avaxPrice).toFixed(2) || 0}</span>
             </div>
             <div className='spin-card light'>
               <span className='title'>Total Withdraw</span>
-              <span className='token-amount'>32566</span>
+              <span className='token-amount'>{state?.userData?.totalWithdraw?.toFixed(2) || 0}</span>
               <span className='symbol'>AVAX</span>
-              <span className='usd-amount'>$ 325221</span>
+              <span className='usd-amount'>$ {(state?.userData?.totalWithdraw?.toFixed(2) * state?.avaxPrice).toFixed(2) || 0}</span>
             </div>
           </div>
         </div>
@@ -176,8 +178,9 @@ export default function Landing() {
             </div>
             <div className='spin-card'>
               <span className='title'>Your referral rewards</span>
-              <span className='token-amount'>32566</span>
+              <span className='token-amount'>{state?.userData?.totalRef?.toFixed(2) || 0}</span>
               <span className='symbol'>AVAX</span>
+              <span className='token-amount'>$ {(state?.userData?.totalRef?.toFixed(2) * state?.avaxPrice).toFixed(2) || 0}</span>
             </div>
           </div>
         </div>
