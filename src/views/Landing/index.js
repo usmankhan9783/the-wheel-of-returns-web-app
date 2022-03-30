@@ -127,7 +127,7 @@ export default function Landing() {
 
   return (
     <>
-      <section className='banner'>
+      <section className='banner' id="investment">
         <div className='container'>
           <div className='banner-content'>
             <div className='about-fury'>
@@ -164,7 +164,7 @@ export default function Landing() {
           </p>
         </div>
       </section>
-      <section className="withdrawable">
+      <section className="withdrawable" id="withdrawal">
         <div className='container'>
           <h2 className='title'>Withdrawable</h2>
           <span className='amount'>{state?.userData?.dividend?.toFixed(2) || 0} AVAX</span>
@@ -187,7 +187,7 @@ export default function Landing() {
           </div>
         </div>
       </section>
-      <section className='referral-wrapper'>
+      <section className='referral-wrapper' id="referral">
         <div className='container'>
           <div className="referral">
             <div className="left">
