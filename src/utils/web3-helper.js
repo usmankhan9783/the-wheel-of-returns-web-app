@@ -208,6 +208,7 @@ export const investHandler = async (value)=>{
 		console.log(trx);
 		getContractData();
 		getUserData();
+		await getLastDeposit()
 		getUserDeposits();
 		web3Store.dispatch(
 			setLoaderValue({
@@ -316,3 +317,38 @@ export const getUserDeposits = async () => {
 		console.log(err);
 	}
 };
+
+export const getLastDeposit = async()=>{
+	try{
+		const state = web3Store.getState();
+		const userAddress = state?.web3Reducer?.userAddress;
+		if (!userAddress) {
+			// alert('Please connect your wallet');
+			return;
+		}
+		const theWheelOfReturns = await getContractInstance(web3);
+		const totalUserDeposits = await theWheelOfReturns.methods
+			.getUserAmountOfSpins(userAddress)
+			.call();
+			
+		const usersDeposit = await theWheelOfReturns.methods
+			.getUserSpinInfo(userAddress, parseFloat(totalUserDeposits)-1)
+			.call();
+		const userDepositsObject = {
+			maxDays: parseInt(usersDeposit?.maxDays),
+			percent: parseInt(usersDeposit?.percent) / 10,
+			amount: parseFloat(
+				web3.utils.fromWei(usersDeposit?.amount, 'ether')
+			),
+			totalReturn   : parseFloat(
+				web3.utils.fromWei(usersDeposit?.totalReturn, 'ether')
+			),
+			start: usersDeposit?.start * 1000,
+			finish: usersDeposit?.finish * 1000,
+		};
+		console.log('Last user deposit',userDepositsObject)
+	}
+	catch(err){
+		console.log(err);
+	}
+}
