@@ -131,7 +131,7 @@ export default function Landing() {
           <h2 className='title'>How it Works</h2>
           <p className='para'>The initial investment into the Wheel is locked into the general pool of funds and is no longer accessible to the individual player, these pool funds that are invested to keep the Wheel of Returns profitable. The payout to players will be as a percentage of the wager per day that is available for between 5-100 days</p>
           <p className='para'>
-            The returns at minimum will be 5% a day for 5 days, the maximum amount is 8% for 100 days. In that scenario, if you were to bet 100 AVAX, by the end of the 100 days, you’d be paid out 800 AVAX.
+            The returns at minimum will be 5% a day for 5 days, the maximum amount is 8% for 100 days. In that scenario, if you were to invest 100 AVAX, by the end of the 100 days, you’d be paid out 800 AVAX.
           </p>
         </div>
       </section>
@@ -274,8 +274,8 @@ export default function Landing() {
           <div className='dark-box'>
             <p className='para'>
               As described in the previous sections, we are reliant upon certain market conditions in order to maintain the stability of the payouts per spin. As a result, there will most likely come a time in which market conditions under perform what is necessary for payouts.
-              Based on our calculations this could be anywhere from 65 - 510 days after the inception of the project. This also depends on the luck and the size of payout per participant.
-              Please do not invest any money that you are not willing to lose as you are betting, and while we aim to give you the best return possible, we’d like you to know that this will not always be possible, so always DYOR.
+              Based on our calculations this could be anywhere from 65 - 510 days after the inception of the project.
+              Please do not invest any money that you are not willing to lose, and while we aim to give you the best return possible, we’d like you to know that this will not always be possible, so always DYOR.
             </p>
 
           </div>
