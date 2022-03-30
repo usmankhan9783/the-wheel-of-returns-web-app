@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useSelector } from "react-redux";
+import { configEnv } from "../../utils/configEnv";
 import { connectWallet } from "../../utils/web3-helper";
 import Logo from "./../../assets/images/logo.png";
 import './header.scss'
@@ -45,7 +46,7 @@ function Header() {
                     <a href="#withdrawal">Withdrawal</a>
                   </li>
                   <li className="item">
-                    <a href="#contract">Contract</a>
+                    <a href={configEnv.AVAX_CONTRACT_ADDRESS_URL} target="_blank">Contract</a>
                   </li>
                   <li className="item">
                     <a href="#referral">Referral</a>
