@@ -16,7 +16,7 @@ function App() {
       <div className={themeColor}>
         <Header />
         <Landing setTheme={setTheme} color={themeColor} />
-        {/* <ProcessModal isOpen={isLoading} message={loadingMessage}/> */}
+        {/* <ProcessModal isOpen={true} message={"Test"}/> */}
       </div>
       <ToastContainer/>
       </>

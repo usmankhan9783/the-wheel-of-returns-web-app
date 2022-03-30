@@ -1,8 +1,11 @@
 import React, { useState } from "react";
+import { useSelector } from "react-redux";
+import { connectWallet } from "../../utils/web3-helper";
 import Logo from "./../../assets/images/logo.png";
 import './header.scss'
 
 function Header() {
+  const state = useSelector(state=>state?.web3Reducer)
   const [isNavOpen, setIsNavOpen] = useState(false);
 
   function handleNavbar() {
@@ -55,9 +58,23 @@ function Header() {
                   <a className="spin-btn">
                     Join Telegram
                   </a>
-                  <a className="spin-btn">
+                  {state?.userAddress?(
+                    <button className="spin-btn">
+                    {state?.userAddress?.replace(
+										  state?.userAddress?.substring(5, 38),
+										  '***'
+									  )}
+                  </button>
+                  )
+                  :
+                  (
+                    <button className="spin-btn" onClick={()=>connectWallet()}>
                     Connect
-                  </a>
+                  </button>
+                  )
+                  }
+                  
+                  
                 </div>
               </nav>
             </div>
