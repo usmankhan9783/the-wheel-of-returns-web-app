@@ -39,18 +39,14 @@ a{
   border-radius: 42px;
   font-weight: 500;
   cursor: pointer;
-  @media screen and (max-width:767px) {
-    padding: 8px 14px;
-    border-radius: 4px;
+  &.outline{
+    background: transparent;
+    color: $white;
   }
-   &.outline{
-     background: transparent;
-      color: $white;
-   }
-   &.solid {
-     background: $white;
-      border: 1px solid $white;
-   }
+  &.solid {
+    background: $white;
+    border: 1px solid $white;
+  }
 }
 
 .spin-card{
