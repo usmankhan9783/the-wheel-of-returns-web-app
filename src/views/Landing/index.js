@@ -185,6 +185,22 @@ export default function Landing() {
               <span className='usd-amount'>$ {state?.userData?.totalWithdrawUsd?.toFixed(2) || 0}</span>
             </div>
           </div>
+          <h2 className='title'>Your Spin</h2>
+          <div className='your-spin'>
+            <div className='spin'>
+              <span className='percent'>8.2%</span>
+              <span className='amount'>8425</span>
+              <span className='symbol'>AVAX</span>
+            </div>
+            <div className='spin'>
+              <span className='percent'>8.2%</span>
+              <span className='amount'>8425</span>
+              <span className='symbol'>AVAX</span>
+            </div>
+            <div className='range-slider '>
+              <div className='bar' style={{width:"20%"}}></div>
+            </div>
+          </div>
         </div>
       </section>
       <section className='referral-wrapper' id="referral">

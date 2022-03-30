@@ -60,7 +60,7 @@ function Header() {
                     Join Telegram
                   </a>
                   {state?.userAddress?(
-                    <button className="spin-btn">
+                    <button type="button" className="spin-btn">
                     {state?.userAddress?.replace(
 										  state?.userAddress?.substring(5, 38),
 										  '***'
@@ -69,7 +69,7 @@ function Header() {
                   )
                   :
                   (
-                    <button className="spin-btn" onClick={()=>connectWallet()}>
+                    <button type="button" className="spin-btn" onClick={()=>connectWallet()}>
                     Connect
                   </button>
                   )
