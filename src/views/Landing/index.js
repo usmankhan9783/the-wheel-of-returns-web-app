@@ -111,7 +111,7 @@ export default function Landing() {
     }
   }
 
-  const [investAmount,setInvestAmount] = useState(0);
+  const [investAmount,setInvestAmount] = useState();
   const [isSpinActive,setIsSpinActive] = useState(false);
 
   const spinButtonHandler=async ()=>{
@@ -130,23 +130,39 @@ export default function Landing() {
     getContractData()
   },[])
 
+
+  const renderer = ({ days, hours, minutes, seconds, completed }) => {
+		// Render a countdown
+		if (completed) {
+			return (<></>)
+		} else {
+			return (
+        <h1 className='launch-countdown'>Launching in {days<10 && "0"}{days}D {hours<10 && "0"}{hours}H {minutes<10 && "0"}{minutes}M {seconds<10 && "0"}{seconds}S</h1>
+      )
+      }
+    }
+
   return (
     <>
       <section className='banner' id="investment">
         <div className='container'>
           <div className='banner-content'>
             <div className='about-fury'>
+              <Countdown 
+              date={1649077200000} 
+              renderer={renderer}
+              />
               <h1 className='title'>THE WHEEL OF RETURNS</h1>
               <p className='info'>Welcome to the Wheel of Returns! A simple investment game that gives you the opportunity to wager your money in order to receive great daily returns on your AVAX.</p>
               <button className='spin-btn'>Audit</button>
-              <button className='spin-btn'>Whitepaper</button>
+              <a className='spin-btn' href="Whitepaper.pdf" target="_blank">Whitepaper</a>
             </div>
             <div className='spin-animation'>
               <figure className='spinner'>
                 <img src={spinImg} className={isSpinActive && "spin-active"} alt="spinImg" />
                 <div className='avax-input'>
                   <input 
-                    className='number' 
+                    className='number invest-input' 
                     min={0} 
                     placeholder='100' 
                     type="number"
@@ -174,7 +190,12 @@ export default function Landing() {
           <h2 className='title'>Withdrawable</h2>
           <span className='amount'>{state?.userData?.dividend?.toFixed(2) || 0} AVAX</span>
           <span className='amount'>$ {state?.userData?.dividendUsd?.toFixed(2) || 0}</span>
-          <button className='spin-btn' onClick={()=>withdrawButtonHandler()}>Withdraw</button>
+          {state?.userData?.lastWithdrawDate?
+        <Countdown className='spin-btn' date={state?.userData?.lastWithdrawDate*1000+(24*60*60*1000)}>
+        <button className='spin-btn' onClick={()=>withdrawButtonHandler()}>Withdraw</button>
+      </Countdown>:
+            <button className='spin-btn' onClick={()=>withdrawButtonHandler()}>Withdraw</button>  
+        }
           
           <div className='user-balance'>
             <div className='spin-card light'>
@@ -192,7 +213,7 @@ export default function Landing() {
           </div>
           {state?.userDeposits.length?(
             <>
-             <h2 className='title'>Your Spin</h2>
+             <h2 className='title'>Your Spins</h2>
             <div className='your-spin-container'>
              {state?.userDeposits?.map((data)=>(
                <div className={`your-spin ${Date.now()>data?.finish?"finished":""}`}>
@@ -275,7 +296,7 @@ export default function Landing() {
               <p className='para'>This wager will determine your reward payout.
                 You can spin again and wager other amounts
                 as you like. But once you spin this wager and
-                it’s rewards will blocked in. The minimum
+                it’s rewards will be locked in. The minimum
                 wager amount is
                 0.1 AVAX.
               </p>
@@ -297,7 +318,7 @@ export default function Landing() {
                 Rewards Daily</figcaption>
               </figure>
               <p className='para'>
-              Once you spin, come back daily to claim your returns from your “Previous Spins” section. Click the “Claim Rewards” button to transfered your rewards. And Maybe, if you’re feeling lucky, use your rewards to take another spin!
+              Once you spin, come back daily to claim your returns from your “Previous Spins” section. Click the “Claim Rewards” button to transfer your rewards. And Maybe, if you’re feeling lucky, use your rewards to take another spin!
               </p>
             </div>
           </div>
@@ -319,7 +340,7 @@ export default function Landing() {
           </div>
         </div>
       </section>
-      <section className="withdrawable contract">
+      <section className="withdrawable contract" id="smartcontract">
         <div className='container'>
           <h2 className='title'>Smart Contract</h2>
           <span className='amount'>Contract Balance: {state?.contractData?.contractBalance?.toFixed(2) || 0.00} AVAX</span>

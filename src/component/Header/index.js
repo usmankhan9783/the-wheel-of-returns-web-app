@@ -40,7 +40,7 @@ function Header() {
               <nav className="navbar">
                 <ul className="nav-links">
                   <li className="item">
-                    <a href="#investment">Investment</a>
+                    <a href="#investment">Invest</a>
                   </li>
                   <li className="item">
                     <a href="#withdrawal">Withdrawal</a>
@@ -52,7 +52,7 @@ function Header() {
                     <a href="#referral">Referral</a>
                   </li>
                   <li className="item">
-                    <a href="#deposits">Deposit</a>
+                    <a href="#smartcontract">Deposit</a>
                   </li>
                 </ul>
                 <div className="action-btn">
