@@ -51,6 +51,12 @@
       font-size: 1.7rem;
       color: $white;
     }
+    .cross-btn {
+      POSITION: absolute;
+      top: 15px;
+      right: 24px;
+      cursor: pointer;
+    }
   }
 }
 

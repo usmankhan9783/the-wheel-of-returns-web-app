@@ -186,6 +186,8 @@ export default function Landing() {
             </div>
           </div>
           <h2 className='title'>Your Spin</h2>
+          
+          
           <div className='your-spin'>
             <div className='spin'>
               <span className='percent'>8.2%</span>
