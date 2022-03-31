@@ -110,10 +110,13 @@ export default function Landing() {
   }
 
   const [investAmount,setInvestAmount] = useState(0);
+  const [isSpinActive,setIsSpinActive] = useState(false);
 
   const spinButtonHandler=async ()=>{
+    setIsSpinActive(true);
     await investHandler(investAmount);
     setInvestAmount(0)
+    setIsSpinActive(false);
   }
 
   const withdrawButtonHandler = async()=>{
@@ -138,7 +141,7 @@ export default function Landing() {
             </div>
             <div className='spin-animation'>
               <figure className='spinner'>
-                <img src={spinImg} className="spin-active" alt="spinImg" />
+                <img src={spinImg} className={isSpinActive && "spin-active"} alt="spinImg" />
                 <div className='avax-input'>
                   <input 
                     className='number' 
