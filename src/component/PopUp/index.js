@@ -1,11 +1,23 @@
+import { useDispatch } from 'react-redux';
+import { setPopupValue } from '../../store/web3Slice';
 import './popup.scss';
 
 export function PopUp({ isOpen, message }) {
+    const dispatch = useDispatch();
+    const closePopup = ()=>{
+        dispatch(setPopupValue({
+            isLoaderOpen: false,
+			loaderMessage: "",
+        }))
+    }   
+
     if (isOpen)
         return (
             <div className={`popup-container ${isOpen && "isOpen"}`} id="modal-opened">
                 <div className="modal">
+                
                     <div className="modal__details">
+                    <div className="cross-btn" onClick={()=>closePopup()}>X</div>
                         <h1 className="modal__title">
                         <svg xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" width="366.037" height="39.979" viewBox="0 0 366.037 39.979">
                             <defs>

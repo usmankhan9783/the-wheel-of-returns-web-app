@@ -7,7 +7,7 @@ import { web3Store } from '../store/web3Store';
 import TheWheelOfReturns from './contract/TheWheelOfReturns.json';
 import { getQueryVariable, tokenPriceAVAX } from './helper';
 import { notification } from '../component/Notification';
-import { setAvaxPrice, setContractData, setUserData, setWalletAddress,setLoaderValue, setUserDeposits } from '../store/web3Slice';
+import { setAvaxPrice, setContractData, setUserData, setWalletAddress,setLoaderValue, setUserDeposits, setPopupValue } from '../store/web3Slice';
 
 export let web3 = new Web3(configEnv.AVAX_RPC);
 
@@ -208,14 +208,23 @@ export const investHandler = async (value)=>{
 		console.log(trx);
 		getContractData();
 		getUserData();
-		await getLastDeposit()
+		const lastDeposit = await getLastDeposit()
 		getUserDeposits();
+
+		const popupMessage = `You have got ${lastDeposit?.percent}% daily return for ${lastDeposit?.maxDays} days`
+		
 		web3Store.dispatch(
 			setLoaderValue({
 				isLoaderOpen: false,
 				loaderMessage: '',
 			})
 		);
+		web3Store.dispatch(
+			setPopupValue({
+				isLoaderOpen: true,
+				loaderMessage: popupMessage,
+			})
+		)
 		notification('success','Investment successful');
 
 		// alert('trx successful', trx.transactionHash);
@@ -309,14 +318,29 @@ export const getUserDeposits = async () => {
 				start: usersDeposit?.start * 1000,
 				finish: usersDeposit?.finish * 1000,
 			};
+
 			userDepositPlans.push(userDepositsObject);
+
+			let tempUserDeposits = userDepositPlans.slice();
+			await web3Store.dispatch(setUserDeposits(tempUserDeposits));
 		}
-		userDepositPlans = JSON.parse(JSON.stringify(userDepositPlans));
-		await web3Store.dispatch(setUserDeposits(userDepositPlans));
+	
 	} catch (err) {
 		console.log(err);
 	}
 };
+
+export const getUpdatedLength = async (theWheelOfReturns,prevLength,userAddress)=>{
+	
+	const totalUserDeposits = await theWheelOfReturns.methods
+	.getUserAmountOfSpins(userAddress)
+	.call();
+	if(parseInt(totalUserDeposits)>prevLength){
+		return parseInt(totalUserDeposits);
+	}else{
+		return getUpdatedLength(theWheelOfReturns,prevLength,userAddress);
+	}
+}
 
 export const getLastDeposit = async()=>{
 	try{
@@ -327,12 +351,12 @@ export const getLastDeposit = async()=>{
 			return;
 		}
 		const theWheelOfReturns = await getContractInstance(web3);
-		const totalUserDeposits = await theWheelOfReturns.methods
-			.getUserAmountOfSpins(userAddress)
-			.call();
-			
+	
+		const totalUserDeposits = await getUpdatedLength(theWheelOfReturns,state?.userDeposits?.length,userAddress);
+
+	
 		const usersDeposit = await theWheelOfReturns.methods
-			.getUserSpinInfo(userAddress, parseFloat(totalUserDeposits)-1)
+			.getUserSpinInfo(userAddress, totalUserDeposits)
 			.call();
 		const userDepositsObject = {
 			maxDays: parseInt(usersDeposit?.maxDays),
@@ -347,6 +371,7 @@ export const getLastDeposit = async()=>{
 			finish: usersDeposit?.finish * 1000,
 		};
 		console.log('Last user deposit',userDepositsObject)
+		return userDepositsObject;
 	}
 	catch(err){
 		console.log(err);

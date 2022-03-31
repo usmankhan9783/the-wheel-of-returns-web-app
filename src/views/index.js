@@ -6,6 +6,7 @@ import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { ProcessModal } from '../component/ProcessModal';
 import { useSelector } from 'react-redux';
+import { PopUp } from '../component/PopUp';
 
 
 function App() {
@@ -20,6 +21,7 @@ function App() {
         <Header />
         <Landing setTheme={setTheme} color={themeColor} />
         <ProcessModal isOpen={state?.isLoaderOpen} message={state?.loaderMessage}/>
+        <PopUp isOpen={state?.isPopupOpen} message = {state?.popupMessage} />
       </div>
       <ToastContainer/>
       </>

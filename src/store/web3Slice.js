@@ -7,6 +7,8 @@ const initialState = {
     avaxPrice:0,
 	isLoaderOpen:false,
 	loaderMessage:"",
+	isPopupOpen:false,
+	popupMessage:"",
 	userDeposits:"",
 };
 
@@ -33,7 +35,12 @@ const web3Slice = createSlice({
 			const {isLoaderOpen,loaderMessage} = action.payload;
 			state.isLoaderOpen = isLoaderOpen;
 			state.loaderMessage = loaderMessage;
-		}
+		},
+		setPopupValue(state,action){
+			const {isLoaderOpen,loaderMessage} = action.payload;
+			state.isPopupOpen = isLoaderOpen;
+			state.popupMessage = loaderMessage;
+		},
 	},
 });
 
@@ -42,6 +49,7 @@ export const {
     setContractData,
     setUserData,
 	setLoaderValue,
+	setPopupValue,
 	setUserDeposits,
     setAvaxPrice,
 } = web3Slice.actions;

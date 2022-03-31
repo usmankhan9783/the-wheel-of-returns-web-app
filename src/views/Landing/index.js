@@ -9,6 +9,8 @@ import { useEffect, useState } from 'react'
 import { getAvaxPrice, getContractData, investHandler, withdrawHandler } from '../../utils/web3-helper'
 import { useSelector } from 'react-redux'
 import { notification } from '../../component/Notification'
+import moment from 'moment'
+import Countdown from 'react-countdown'
 
 export default function Landing() {
   const state = useSelector(state=>state?.web3Reducer)
@@ -117,11 +119,14 @@ export default function Landing() {
     }
   }
 
-  const [investAmount,setInvestAmount] = useState(0);
+  const [investAmount,setInvestAmount] = useState();
+  const [isSpinActive,setIsSpinActive] = useState(false);
 
   const spinButtonHandler=async ()=>{
+    setIsSpinActive(true);
     await investHandler(investAmount);
     setInvestAmount(0)
+    setIsSpinActive(false);
   }
 
   const withdrawButtonHandler = async()=>{
@@ -133,23 +138,39 @@ export default function Landing() {
     getContractData()
   },[])
 
+
+  const renderer = ({ days, hours, minutes, seconds, completed }) => {
+		// Render a countdown
+		if (completed) {
+			return (<></>)
+		} else {
+			return (
+        <h1 className='launch-countdown'>Launching in: <span className='launch-timer'>{days<10 && "0"}{days}<span className='launch-timer-symbol'>D</span> {hours<10 && "0"}{hours}<span className='launch-timer-symbol'>H</span> {minutes<10 && "0"}{minutes}<span className='launch-timer-symbol'>M</span> {seconds<10 && "0"}{seconds}<span className='launch-timer-symbol'>S</span></span></h1>
+      )
+      }
+    }
+
   return (
     <>
       <section className='banner' id="investment">
         <div className='container'>
           <div className='banner-content'>
             <div className='about-fury'>
+              <Countdown 
+              date={1649077200000} 
+              renderer={renderer}
+              />
               <h1 className='title'>THE WHEEL OF RETURNS</h1>
               <p className='info'>Welcome to the Wheel of Returns! A simple investment game that gives you the opportunity to wager your money in order to receive great daily returns on your AVAX.</p>
               <button className='spin-btn'>Audit</button>
-              <button className='spin-btn'>Whitepaper</button>
+              <a className='spin-btn' href="Whitepaper.pdf" target="_blank">Whitepaper</a>
             </div>
             <div className='spin-animation'>
               <figure className='spinner'>
-                <img src={spinImg} className="spin-active" alt="spinImg" />
+                <img src={spinImg} className={isSpinActive && "spin-active"} alt="spinImg" />
                 <div className='avax-input'>
                   <input 
-                    className='number' 
+                    className='number invest-input' 
                     min={0} 
                     placeholder='100' 
                     type="number"
@@ -177,7 +198,12 @@ export default function Landing() {
           <h2 className='title'>Withdrawable</h2>
           <span className='amount'>{state?.userData?.dividend?.toFixed(2) || 0} AVAX</span>
           <span className='amount'>$ {state?.userData?.dividendUsd?.toFixed(2) || 0}</span>
-          <button className='spin-btn' onClick={()=>withdrawButtonHandler()}>Withdraw</button>
+          {state?.userData?.lastWithdrawDate?
+        <Countdown className='spin-btn' date={state?.userData?.lastWithdrawDate*1000+(24*60*60*1000)}>
+        <button className='spin-btn' onClick={()=>withdrawButtonHandler()}>Withdraw</button>
+      </Countdown>:
+            <button className='spin-btn' onClick={()=>withdrawButtonHandler()}>Withdraw</button>  
+        }
           
           <div className='user-balance'>
             <div className='spin-card light'>
@@ -193,22 +219,37 @@ export default function Landing() {
               <span className='usd-amount'>$ {state?.userData?.totalWithdrawUsd?.toFixed(2) || 0}</span>
             </div>
           </div>
-          <h2 className='title'>Your Spin</h2>
-          <div className='your-spin'>
-            <div className='spin'>
-              <span className='percent'>8.2%</span>
-              <span className='amount'>8425</span>
-              <span className='symbol'>AVAX</span>
-            </div>
-            <div className='spin'>
-              <span className='percent'>8.2%</span>
-              <span className='amount'>8425</span>
-              <span className='symbol'>AVAX</span>
-            </div>
-            <div className='range-slider '>
-              <div className='bar' style={{width:"20%"}}></div>
-            </div>
-          </div>
+          {state?.userDeposits.length?(
+            <>
+             <h2 className='title'>Your Spins</h2>
+            <div className='your-spin-container'>
+             {state?.userDeposits?.map((data)=>(
+               <div className={`your-spin ${Date.now()>data?.finish?"finished":""}`}>
+               <div className='spin spin-left'>
+                 <span className='percent'>{data?.percent}%</span>
+                 <span className='amount'>{data?.amount}</span>
+                 <span className='symbol'>AVAX</span>
+               </div>
+               <div className='spin spin-right'>
+                 <span className='percent'>{`${moment(data?.start).format("MMM Do")} -> ${moment(data?.finish).format("MMM Do")}`}</span>
+                 <span className='amount'>{data?.totalReturn}</span>
+                 <span className='symbol'>AVAX</span>
+               </div>
+               <div className='plan-countdown-container'>
+               <Countdown date={data?.finish}>
+               <div className='plan-countdown'>Finished</div>
+               
+               </Countdown>
+               </div>
+               {/* <div className='range-slider '> */}
+                 {/* <div className='bar' style={{width:`${data?.finish-data?.start}%`}}></div> */}
+                 
+               {/* </div> */}
+             </div>
+             ))}
+             </div>
+            </>
+          ):<></>}
         </div>
       </section>
       <section className='referral-wrapper' id="referral">
@@ -290,7 +331,7 @@ export default function Landing() {
               <p className='para'>This wager will determine your reward payout.
                 You can spin again and wager other amounts
                 as you like. But once you spin this wager and
-                it’s rewards will blocked in. The minimum
+                it’s rewards will be locked in. The minimum
                 wager amount is
                 0.1 AVAX.
               </p>
@@ -312,7 +353,7 @@ export default function Landing() {
                 Rewards Daily</figcaption>
               </figure>
               <p className='para'>
-              Once you spin, come back daily to claim your returns from your “Previous Spins” section. Click the “Claim Rewards” button to transfered your rewards. And Maybe, if you’re feeling lucky, use your rewards to take another spin!
+              Once you spin, come back daily to claim your returns from your “Previous Spins” section. Click the “Claim Rewards” button to transfer your rewards. And Maybe, if you’re feeling lucky, use your rewards to take another spin!
               </p>
             </div>
           </div>
@@ -343,7 +384,7 @@ export default function Landing() {
           </div>
         </div>
       </section>
-      <section className="withdrawable contract">
+      <section className="withdrawable contract" id="smartcontract">
         <div className='container'>
           <h2 className='title'>Smart Contract</h2>
           <span className='amount'>Contract Balance: {state?.contractData?.contractBalance?.toFixed(2) || 0.00} AVAX</span>
