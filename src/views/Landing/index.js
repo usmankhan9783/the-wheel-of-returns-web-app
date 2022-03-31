@@ -137,7 +137,7 @@ export default function Landing() {
 			return (<></>)
 		} else {
 			return (
-        <h1 className='launch-countdown'>Launching in {days<10 && "0"}{days}D {hours<10 && "0"}{hours}H {minutes<10 && "0"}{minutes}M {seconds<10 && "0"}{seconds}S</h1>
+        <h1 className='launch-countdown'>Launching in <span className='launch-timer'>{days<10 && "0"}{days}<span className='launch-timer-symbol'>D</span> {hours<10 && "0"}{hours}<span className='launch-timer-symbol'>H</span> {minutes<10 && "0"}{minutes}<span className='launch-timer-symbol'>M</span> {seconds<10 && "0"}{seconds}<span className='launch-timer-symbol'>S</span></span></h1>
       )
       }
     }
