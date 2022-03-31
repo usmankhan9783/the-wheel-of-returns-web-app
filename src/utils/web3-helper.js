@@ -347,7 +347,6 @@ export const getLastDeposit = async()=>{
 		const state = web3Store.getState();
 		const userAddress = state?.web3Reducer?.userAddress;
 		if (!userAddress) {
-			// alert('Please connect your wallet');
 			return;
 		}
 		const theWheelOfReturns = await getContractInstance(web3);
@@ -356,7 +355,7 @@ export const getLastDeposit = async()=>{
 
 	
 		const usersDeposit = await theWheelOfReturns.methods
-			.getUserSpinInfo(userAddress, totalUserDeposits)
+			.getUserSpinInfo(userAddress, totalUserDeposits-1)
 			.call();
 		const userDepositsObject = {
 			maxDays: parseInt(usersDeposit?.maxDays),
@@ -375,6 +374,6 @@ export const getLastDeposit = async()=>{
 	}
 	catch(err){
 		console.log(err);
-		debugger
+		
 	}
 }
