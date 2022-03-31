@@ -215,6 +215,9 @@
 .referral-wrapper{
     padding: 80px 0;
     background-image: linear-gradient(42deg, #29106C, #082164);
+    @media screen and (max-width: 767px) {
+        padding: 50px 0;
+    }
     .referral {
         display: flex;
         justify-content: space-evenly;
@@ -248,6 +251,45 @@
                 max-width: 100%;
                 margin: 0 auto;
             }
+        }
+    }
+    .levels {
+        display: flex;
+        padding: 120px 0 0;
+        justify-content: space-between;
+        @media screen and (max-width: 991px) {
+          flex-wrap: wrap;
+          justify-content: center;
+        }
+        .shadow-box {
+          box-shadow: 0px 40px 40px -5px rgba(9, 31, 67, 0.04);
+          padding: 20px 10px;
+          width: 200px;
+          height: 200px;
+          margin: 0 10px 20px 0;
+          border-radius: 50%;
+          background-color: $dark-black;
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+          text-align: center;
+          h1 {
+            font-size: 28px;
+            margin: 7px;
+            color: $white;
+            font-weight: 600;
+          }
+      
+          p {
+            font-size: 15px;
+            margin: 8px;
+            color: $light-blue;
+          }
+          .level {
+            font-size: 18px;
+            margin: 8px;
+            color: $white;
+          }
         }
     }
 }
@@ -325,7 +367,7 @@
     padding: 80px 0;
     text-align: center;
     @media(max-width: 767px) {
-        padding: 50px 0 0;
+        padding: 50px 0;
     }
     .title{
         max-width: 690px;

@@ -241,6 +241,33 @@ export default function Landing() {
               <span className='usd-amount'>$ {state?.userData?.totalRefUsd?.toFixed(2) || 0}</span>
             </div>
           </div>
+          <div className="levels">
+            <div className="shadow-box">
+                <h1>5%</h1>
+                <p>Level 1</p>
+                <p className="level">0</p>
+            </div>
+            <div className="shadow-box">
+                <h1>3%</h1>
+                <p>Level 2</p>
+                <p className="level">0</p>
+            </div>{" "}
+            <div className="shadow-box">
+                <h1>1.5%</h1>
+                <p>Level 3</p>
+                <p className="level">0</p>
+            </div>{" "}
+            <div className="shadow-box">
+                <h1>0.5%</h1>
+                <p>Level 4</p>
+                <p className="level">0</p>
+            </div>{" "}
+            <div className="shadow-box">
+                <h1>0.5%</h1>
+                <p>Level 5</p>
+                <p className="level">0</p>
+            </div>
+        </div>
         </div>
       </section>
       <section className='aspects-wrapper'>
