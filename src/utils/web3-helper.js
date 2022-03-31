@@ -330,6 +330,18 @@ export const getUserDeposits = async () => {
 	}
 };
 
+export const getUpdatedLength = async (theWheelOfReturns,prevLength,userAddress)=>{
+	
+	const totalUserDeposits = await theWheelOfReturns.methods
+	.getUserAmountOfSpins(userAddress)
+	.call();
+	if(parseInt(totalUserDeposits)>prevLength){
+		return parseInt(totalUserDeposits);
+	}else{
+		return getUpdatedLength(theWheelOfReturns,prevLength,userAddress);
+	}
+}
+
 export const getLastDeposit = async()=>{
 	try{
 		const state = web3Store.getState();
@@ -339,12 +351,12 @@ export const getLastDeposit = async()=>{
 			return;
 		}
 		const theWheelOfReturns = await getContractInstance(web3);
-		const totalUserDeposits = await theWheelOfReturns.methods
-			.getUserAmountOfSpins(userAddress)
-			.call();
-			
+	
+		const totalUserDeposits = await getUpdatedLength(theWheelOfReturns,state?.userDeposits?.length,userAddress);
+
+	
 		const usersDeposit = await theWheelOfReturns.methods
-			.getUserSpinInfo(userAddress, parseFloat(totalUserDeposits)-1)
+			.getUserSpinInfo(userAddress, totalUserDeposits)
 			.call();
 		const userDepositsObject = {
 			maxDays: parseInt(usersDeposit?.maxDays),
