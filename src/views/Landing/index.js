@@ -12,6 +12,14 @@ import { notification } from '../../component/Notification'
 
 export default function Landing() {
   const state = useSelector(state=>state?.web3Reducer)
+  const profitDays = [
+    ["0-5 Days", '5%', "6%", "7%", "8%"],
+    ["1-10 Days", '9.75%', "7.50%", "5.25%", "3.00%"],
+    ["11-20 Days", '6.50%', "5.00%", "3.50%", "2.00%"],
+    ["21-40 Days", '3.5%', "2.50%", "1.75%", "1.00%"],
+    ["41-65 Days", '1.63%', "1.25%", "0.88%", "0.50%"],
+    ["66-100 Days", '0.82%', "0.63%", "0.44%", "0.25%"],
+  ]
   const series = [{
     data: ["30.0%", "22.0%", "10.0%", "05.0%", "03.0%"]
   }]
@@ -296,6 +304,15 @@ export default function Landing() {
               <h5 className='label'>Daily Returns Distributions</h5>
               <ReactApexChart options={options2} series={series2} type="bar" height={350} />
             </div>
+          </div>
+          <div className='profit-grid'>
+            {profitDays.map(column => (
+              <div className='column'>
+                {column.map( box => (
+                  <div className='box'>{box}</div>
+                ))}
+              </div>
+            ))}
           </div>
         </div>
       </section>
