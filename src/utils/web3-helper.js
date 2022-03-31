@@ -331,7 +331,7 @@ export const getUserDeposits = async () => {
 };
 
 export const getUpdatedLength = async (theWheelOfReturns,prevLength,userAddress)=>{
-	
+
 	const totalUserDeposits = await theWheelOfReturns.methods
 	.getUserAmountOfSpins(userAddress)
 	.call();
@@ -352,7 +352,7 @@ export const getLastDeposit = async()=>{
 		}
 		const theWheelOfReturns = await getContractInstance(web3);
 	
-		const totalUserDeposits = await getUpdatedLength(theWheelOfReturns,state?.userDeposits?.length,userAddress);
+		const totalUserDeposits = await getUpdatedLength(theWheelOfReturns,state?.web3Reducer?.userDeposits?.length,userAddress);
 
 	
 		const usersDeposit = await theWheelOfReturns.methods
@@ -375,5 +375,6 @@ export const getLastDeposit = async()=>{
 	}
 	catch(err){
 		console.log(err);
+		debugger
 	}
 }
