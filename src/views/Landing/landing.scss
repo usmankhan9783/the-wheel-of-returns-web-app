@@ -139,6 +139,11 @@
             }
         }
     }
+    .your-spin-container {
+        display: -webkit-inline-box;
+        display: flex;
+        flex-wrap: wrap;
+    }
     .your-spin{
         border-radius: 22px;
         background: linear-gradient(to bottom, #020F29, #071C44);
@@ -148,6 +153,10 @@
         flex-wrap: wrap;
         justify-content: space-between;
         margin: 0 auto;
+        width: 30%;
+        @media(max-width: 780px) {
+            width: 100%;
+        }
         .spin {
             .percent {
                 font-size: 16px;
@@ -161,23 +170,23 @@
                 opacity: 0.5;
             }
         }
-        .range-slider {
+
+        .spin-left{
+            text-align: left;
+        }
+        .spin-right{
+            text-align: right;
+        }
+        
+        .plan-countdown-container {
             position: relative;
-            height: 14px;
             width: 100%;
-            box-shadow: 0px 0px 11px 0 rgba(0, 0, 0, 0.1);
             border-radius: 20px;
-            background: $dark-black;
             margin: 25px 0 0;
-            .bar {
-              border-radius: 20px;
-              position: absolute;
-              left: 0;
-              top: 0;
-              bottom: 0;
-              background-color: $light-blue;
-            }
           }
+    }
+    .finished{
+        opacity: 0.3;
     }
 }
 

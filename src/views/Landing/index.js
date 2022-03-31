@@ -9,6 +9,8 @@ import { useEffect, useState } from 'react'
 import { getAvaxPrice, getContractData, investHandler, withdrawHandler } from '../../utils/web3-helper'
 import { useSelector } from 'react-redux'
 import { notification } from '../../component/Notification'
+import moment from 'moment'
+import Countdown from 'react-countdown'
 
 export default function Landing() {
   const state = useSelector(state=>state?.web3Reducer)
@@ -188,24 +190,37 @@ export default function Landing() {
               <span className='usd-amount'>$ {state?.userData?.totalWithdrawUsd?.toFixed(2) || 0}</span>
             </div>
           </div>
-          <h2 className='title'>Your Spin</h2>
-          
-          
-          <div className='your-spin'>
-            <div className='spin'>
-              <span className='percent'>8.2%</span>
-              <span className='amount'>8425</span>
-              <span className='symbol'>AVAX</span>
-            </div>
-            <div className='spin'>
-              <span className='percent'>8.2%</span>
-              <span className='amount'>8425</span>
-              <span className='symbol'>AVAX</span>
-            </div>
-            <div className='range-slider '>
-              <div className='bar' style={{width:"20%"}}></div>
-            </div>
-          </div>
+          {state?.userDeposits.length?(
+            <>
+             <h2 className='title'>Your Spin</h2>
+            <div className='your-spin-container'>
+             {state?.userDeposits?.map((data)=>(
+               <div className={`your-spin ${Date.now()>data?.finish?"finished":""}`}>
+               <div className='spin spin-left'>
+                 <span className='percent'>{data?.percent}%</span>
+                 <span className='amount'>{data?.amount}</span>
+                 <span className='symbol'>AVAX</span>
+               </div>
+               <div className='spin spin-right'>
+                 <span className='percent'>{`${moment(data?.start).format("MMM Do")} -> ${moment(data?.finish).format("MMM Do")}`}</span>
+                 <span className='amount'>{data?.totalReturn}</span>
+                 <span className='symbol'>AVAX</span>
+               </div>
+               <div className='plan-countdown-container'>
+               <Countdown date={data?.finish}>
+               <div className='plan-countdown'>Finished</div>
+               
+               </Countdown>
+               </div>
+               {/* <div className='range-slider '> */}
+                 {/* <div className='bar' style={{width:`${data?.finish-data?.start}%`}}></div> */}
+                 
+               {/* </div> */}
+             </div>
+             ))}
+             </div>
+            </>
+          ):<></>}
         </div>
       </section>
       <section className='referral-wrapper' id="referral">
