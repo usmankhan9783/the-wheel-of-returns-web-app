@@ -56,7 +56,7 @@ function Header() {
                   </li>
                 </ul>
                 <div className="action-btn">
-                  <a className="spin-btn">
+                  <a className="spin-btn" href="https://t.me/wheelofreturns" target="_blank">
                     Join Telegram
                   </a>
                   {state?.userAddress?(
