@@ -318,10 +318,13 @@ export const getUserDeposits = async () => {
 				start: usersDeposit?.start * 1000,
 				finish: usersDeposit?.finish * 1000,
 			};
+
 			userDepositPlans.push(userDepositsObject);
+
+			let tempUserDeposits = userDepositPlans.slice();
+			await web3Store.dispatch(setUserDeposits(tempUserDeposits));
 		}
-		userDepositPlans = JSON.parse(JSON.stringify(userDepositPlans));
-		await web3Store.dispatch(setUserDeposits(userDepositPlans));
+	
 	} catch (err) {
 		console.log(err);
 	}
