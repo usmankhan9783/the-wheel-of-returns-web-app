@@ -405,18 +405,18 @@ export default function Landing() {
       </section>
       <section className='footer'>
         <div className='container'>
-          <h2 className='title'>Pool Governance</h2>
+          {/*<h2 className='title'>Pool Governance</h2>
           <p className='para'>
             Once the wheel is spun, the wager will automatically be distributed into the
             Wheel of Returns’ self-governed pool. This pool is automatically rebalanced based on the logic within its smart contract. This logic is immutable, and will optimize its lending returns based on the market conditions in order to yield the highest returns in order to satisfy the maintenance of the Wheel of Returns’ payouts. This logic is a mirror of the Pool Together logic but ported onto the AVAX network.
 
-          </p>
-          <h2 className='title'>Risk</h2>
+          </p>*/}
+          <h2 className='title'>Risks Involved</h2>
           <div className='dark-box'>
             <p className='para'>
-              As described in the previous sections, we are reliant upon certain market conditions in order to maintain the stability of the payouts per spin. As a result, there will most likely come a time in which market conditions under perform what is necessary for payouts.
-              Based on our calculations this could be anywhere from 65 - 510 days after the inception of the project.
-              Please do not invest any money that you are not willing to lose, and while we aim to give you the best return possible, we’d like you to know that this will not always be possible, so always DYOR.
+              We are reliant upon the smart contract balance in order to maintain the stability of the payouts per spin. As a result, the payouts will continue only as long as the smart contract has enough funds for the necessary payouts.
+              <br/>
+              Please do not invest any money that you are not willing to lose as you are betting, and while we aim to give you the best return possible, we’d like you to know that this will not always be possible, so alway DYOR.
             </p>
 
           </div>

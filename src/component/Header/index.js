@@ -63,6 +63,9 @@ function Header() {
                   <a className="spin-btn" href="https://t.me/wheelofreturns" target="_blank">
                     Join Telegram
                   </a>
+                  <a className="spin-btn" href="https://mobile.twitter.com/wheelofreturns" target="_blank">
+                    Twitter
+                  </a>
                   {state?.userAddress?(
                     <button type="button" className="spin-btn">
                     {state?.userAddress?.replace(
