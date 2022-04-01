@@ -157,7 +157,7 @@ export default function Landing() {
           <div className='banner-content'>
             <div className='about-fury'>
               <Countdown 
-              date={1649077200000} 
+              date={1649163600000}
               renderer={renderer}
               />
               <h1 className='title'>THE WHEEL OF RETURNS</h1>
