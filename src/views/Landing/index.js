@@ -359,6 +359,22 @@ export default function Landing() {
           </div>
         </div>
       </section>
+      <section className='returns'>
+        <div className='container'>
+        <h2 className='title'>Returns Percentage & Time 
+        Likelihood Charts</h2>
+          <div className='return-stats'>
+            <div className="chart">
+              <h5 className='label'>Average Length of Daily Returns</h5>
+              <ReactApexChart options={options} series={series} type="bar" height={350} />
+            </div>
+            <div className="chart">
+              <h5 className='label'>Daily Returns Distributions</h5>
+              <ReactApexChart options={options2} series={series2} type="bar" height={350} />
+            </div>
+          </div>
+        </div>
+      </section>
       <section className="withdrawable contract" id="smartcontract">
         <div className='container'>
           <h2 className='title'>Smart Contract</h2>
