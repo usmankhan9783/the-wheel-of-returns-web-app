@@ -444,6 +444,19 @@
               opacity: 0.5;
               white-space: nowrap;
               margin: 0 0 10px;
+              min-height: 67px;
+
+              
+          }
+         .box-0 {
+            background: #008ffb !important;
+            font-weight: 500;
+        }
+      }
+      .column-0{
+          .box{
+            background: #008ffb !important;
+            font-weight: 500;
           }
       }
     }

@@ -15,8 +15,8 @@ import Countdown from 'react-countdown'
 export default function Landing() {
   const state = useSelector(state=>state?.web3Reducer)
   const profitDays = [
-    ["0-5 Days", '5%', "6%", "7%", "8%"],
-    ["1-10 Days", '9.75%', "7.50%", "5.25%", "3.00%"],
+    ["", '5%', "6%", "7%", "8%"],
+    ["05-10 Days", '9.75%', "7.50%", "5.25%", "3.00%"],
     ["11-20 Days", '6.50%', "5.00%", "3.50%", "2.00%"],
     ["21-40 Days", '3.5%', "2.50%", "1.75%", "1.00%"],
     ["41-65 Days", '1.63%', "1.25%", "0.88%", "0.50%"],
@@ -374,10 +374,10 @@ export default function Landing() {
             </div>
           </div>
           <div className='profit-grid'>
-            {profitDays.map(column => (
-              <div className='column'>
-                {column.map( box => (
-                  <div className='box'>{box}</div>
+            {profitDays.map((column,colIndex) => (
+              <div className={`column column-${colIndex}`}>
+                {column.map( (box,boxIndex) => (
+                  <div className={`box box-${boxIndex}`}>{box}</div>
                 ))}
               </div>
             ))}
