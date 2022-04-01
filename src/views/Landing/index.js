@@ -286,27 +286,27 @@ export default function Landing() {
             <div className="shadow-box">
                 <h1>5%</h1>
                 <p>Level 1</p>
-                <p className="level">0</p>
+                <p className="level">{state?.userData?.userRefferals?.level1 || 0}</p>
             </div>
             <div className="shadow-box">
                 <h1>3%</h1>
                 <p>Level 2</p>
-                <p className="level">0</p>
+                <p className="level">{state?.userData?.userRefferals?.level2 || 0}</p>
             </div>{" "}
             <div className="shadow-box">
                 <h1>1.5%</h1>
                 <p>Level 3</p>
-                <p className="level">0</p>
+                <p className="level">{state?.userData?.userRefferals?.level3 || 0}</p>
             </div>{" "}
             <div className="shadow-box">
                 <h1>0.5%</h1>
                 <p>Level 4</p>
-                <p className="level">0</p>
+                <p className="level">{state?.userData?.userRefferals?.level4 || 0}</p>
             </div>{" "}
             <div className="shadow-box">
                 <h1>0.5%</h1>
                 <p>Level 5</p>
-                <p className="level">0</p>
+                <p className="level">{state?.userData?.userRefferals?.level5 || 0}</p>
             </div>
         </div>
         </div>

@@ -150,6 +150,20 @@ export const getUserData = async () => {
 		.methods
 		.getUserDividends(walletAddress)
 		.call();
+
+		const userRefferals = await theWheelOfReturns
+			.methods
+			.getInvestorRefs(walletAddress)
+			.call();
+
+		const userRefferalsObj = {
+			level1:userRefferals['0'],
+			level2:userRefferals['1'],
+			level3:userRefferals['2'],
+			level4:userRefferals['3'],
+			level5:userRefferals['4'],
+		}
+
 		const userData={
 			investmentCount:parseFloat(investorData?.investmentCount),
 			investmentTime:parseFloat(investorData?.investmentTime),
@@ -162,6 +176,7 @@ export const getUserData = async () => {
 			totalWithdrawUsd:parseFloat(web3.utils.fromWei(investorData?.totalWithdraw,"ether"))*state?.web3Reducer?.avaxPrice,
 			dividend:parseFloat(web3.utils.fromWei(dividend,"ether")), 
 			dividendUsd:parseFloat(web3.utils.fromWei(dividend,"ether"))*state?.web3Reducer?.avaxPrice, 
+			userRefferals:userRefferalsObj,
 		}
 
 		await web3Store.dispatch(setUserData(userData))
