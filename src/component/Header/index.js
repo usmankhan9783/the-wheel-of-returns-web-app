@@ -46,7 +46,11 @@ function Header() {
                     <a href="#withdrawal">Withdrawal</a>
                   </li>
                   <li className="item">
-                    <a href={configEnv.AVAX_CONTRACT_ADDRESS_URL} target="_blank">Contract</a>
+                    <a 
+                    // href={configEnv.AVAX_CONTRACT_ADDRESS_URL} 
+                    href="#"
+                    // target="_blank"
+                    >Contract</a>
                   </li>
                   <li className="item">
                     <a href="#referral">Referral</a>

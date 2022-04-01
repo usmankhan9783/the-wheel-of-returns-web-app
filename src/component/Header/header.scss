@@ -10,6 +10,7 @@
     }
   }
 
+
   /* Navbar Toggler */
   .navbar-toggler {
     display: none;
@@ -54,6 +55,7 @@
       transition: 0.25s ease-in-out;
 
       &:nth-child(1) {
+        background: #fff;
         top: 0px;
         -webkit-transform-origin: left center;
         -moz-transform-origin: left center;
@@ -62,6 +64,7 @@
       }
 
       &:nth-child(2) {
+        background: #fff;
         top: 13px;
         -webkit-transform-origin: left center;
         -moz-transform-origin: left center;
@@ -70,6 +73,7 @@
       }
 
       &:nth-child(3) {
+        background: #fff;
         top: 26px;
         -webkit-transform-origin: left center;
         -moz-transform-origin: left center;
@@ -177,6 +181,12 @@
       }
     }
   }
+}
+
+.header .action-btn .spin-btn {
+  background: #fff ;
+  color: #1C1C1C;
+  font-weight: 600;
 }
 
 /*---### RESPONSIVE ###--*/

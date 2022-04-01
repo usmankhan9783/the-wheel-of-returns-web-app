@@ -123,19 +123,19 @@ export default function Landing() {
   const [isSpinActive,setIsSpinActive] = useState(false);
 
   const spinButtonHandler=async ()=>{
-    setIsSpinActive(true);
-    await investHandler(investAmount);
-    setInvestAmount(0)
-    setIsSpinActive(false);
+    // setIsSpinActive(true);
+    // await investHandler(investAmount);
+    // setInvestAmount("")
+    // setIsSpinActive(false);
   }
 
   const withdrawButtonHandler = async()=>{
-    await withdrawHandler()
+    // await withdrawHandler()
   }
 
   useEffect(()=>{
-    getAvaxPrice()
-    getContractData()
+    // getAvaxPrice()
+    // getContractData()
   },[])
 
 
@@ -172,7 +172,7 @@ export default function Landing() {
                   <input 
                     className='number invest-input' 
                     min={0} 
-                    placeholder='100' 
+                    placeholder='0' 
                     type="number"
                     value={investAmount}
                     onChange={(e)=>setInvestAmount(e.target.value)}
@@ -356,31 +356,6 @@ export default function Landing() {
               Once you spin, come back daily to claim your returns from your “Previous Spins” section. Click the “Claim Rewards” button to transfer your rewards. And Maybe, if you’re feeling lucky, use your rewards to take another spin!
               </p>
             </div>
-          </div>
-        </div>
-      </section>
-      <section className='returns'>
-        <div className='container'>
-        <h2 className='title'>Returns Percentage & Time 
-        Likelihood Charts</h2>
-          <div className='return-stats'>
-            <div className="chart">
-              <h5 className='label'>Average Length of Daily Returns</h5>
-              <ReactApexChart options={options} series={series} type="bar" height={350} />
-            </div>
-            <div className="chart">
-              <h5 className='label'>Daily Returns Distributions</h5>
-              <ReactApexChart options={options2} series={series2} type="bar" height={350} />
-            </div>
-          </div>
-          <div className='profit-grid'>
-            {profitDays.map((column,colIndex) => (
-              <div className={`column column-${colIndex}`}>
-                {column.map( (box,boxIndex) => (
-                  <div className={`box box-${boxIndex}`}>{box}</div>
-                ))}
-              </div>
-            ))}
           </div>
         </div>
       </section>
