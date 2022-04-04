@@ -123,19 +123,19 @@ export default function Landing() {
   const [isSpinActive,setIsSpinActive] = useState(false);
 
   const spinButtonHandler=async ()=>{
-    // setIsSpinActive(true);
-    // await investHandler(investAmount);
-    // setInvestAmount("")
-    // setIsSpinActive(false);
+    setIsSpinActive(true);
+    await investHandler(investAmount);
+    setInvestAmount("")
+    setIsSpinActive(false);
   }
 
   const withdrawButtonHandler = async()=>{
-    // await withdrawHandler()
+    await withdrawHandler()
   }
 
   useEffect(()=>{
-    // getAvaxPrice()
-    // getContractData()
+    getAvaxPrice()
+    getContractData()
   },[])
 
 
