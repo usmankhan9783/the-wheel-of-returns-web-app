@@ -26,8 +26,8 @@ export const connectWallet = async () => {
 						chainId: configEnv.AVAX_CHAINID, //137 for mainnet
 						// network: configEnv.AVAX_NETWORK_ID, //matic for mainnet
 						rpc: {
-							// 43113: configEnv.AVAX_RPC,
-							43114: configEnv.AVAX_RPC,
+							43113: configEnv.AVAX_RPC,
+							// 43114: configEnv.AVAX_RPC,
 						},
 					},
 				},
