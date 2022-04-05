@@ -49,7 +49,6 @@ export const connectWallet = async () => {
 				console.log('Accounts', accounts);
 				web3Store.dispatch(setWalletAddress(accounts[0]));
 				await getUserData();
-				web3Store.dispatch(setUserDeposits([]))
 				await getUserDeposits();
 			});
 
@@ -358,9 +357,7 @@ export const getUpdatedLength = async (theWheelOfReturns,prevLength,userAddress)
 		console.log('New Length',parseInt(totalUserDeposits));
 		return parseInt(totalUserDeposits);
 	}else{
-		setTimeout(()=>{
-			return getUpdatedLength(theWheelOfReturns,prevLength,userAddress);
-		},5000)
+		return getUpdatedLength(theWheelOfReturns,prevLength,userAddress);
 		
 	}
 }
