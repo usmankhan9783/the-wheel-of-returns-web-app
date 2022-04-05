@@ -162,7 +162,7 @@ export default function Landing() {
               />
               <h1 className='title'>THE WHEEL OF RETURNS</h1>
               <p className='info'>Welcome to the Wheel of Returns! A simple investment game that gives you the opportunity to wager your money in order to receive great daily returns on your AVAX.</p>
-              <button className='spin-btn'>Audit</button>
+              <a className='spin-btn' href="https://hazecrypto.net/audit/thewheelofreturns" target="_blank">Audit</a>
               <a className='spin-btn' href="Whitepaper.pdf" target="_blank">Whitepaper</a>
             </div>
             <div className='spin-animation'>
