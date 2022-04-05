@@ -26,8 +26,8 @@ export const connectWallet = async () => {
 						chainId: configEnv.AVAX_CHAINID, //137 for mainnet
 						// network: configEnv.AVAX_NETWORK_ID, //matic for mainnet
 						rpc: {
-							43113: configEnv.AVAX_RPC,
-							// 43114: configEnv.AVAX_RPC,
+							// 43113: configEnv.AVAX_RPC,
+							43114: configEnv.AVAX_RPC,
 						},
 					},
 				},
@@ -49,6 +49,7 @@ export const connectWallet = async () => {
 				console.log('Accounts', accounts);
 				web3Store.dispatch(setWalletAddress(accounts[0]));
 				await getUserData();
+				web3Store.dispatch(setUserDeposits([]))
 				await getUserDeposits();
 			});
 
@@ -223,10 +224,6 @@ export const investHandler = async (value)=>{
 		console.log(trx);
 		getContractData();
 		getUserData();
-		const lastDeposit = await getLastDeposit()
-		getUserDeposits();
-
-		const popupMessage = `You have got ${lastDeposit?.percent}% daily return for ${lastDeposit?.maxDays} days`
 		
 		web3Store.dispatch(
 			setLoaderValue({
@@ -234,13 +231,20 @@ export const investHandler = async (value)=>{
 				loaderMessage: '',
 			})
 		);
-		web3Store.dispatch(
-			setPopupValue({
-				isLoaderOpen: true,
-				loaderMessage: popupMessage,
-			})
-		)
+		getUserDeposits();
 		notification('success','Investment successful');
+		const lastDeposit = await getLastDeposit()
+		
+
+		const popupMessage = `You have got ${lastDeposit?.percent}% daily return for ${lastDeposit?.maxDays} days`
+		
+		// web3Store.dispatch(
+		// 	setPopupValue({
+		// 		isLoaderOpen: true,
+		// 		loaderMessage: popupMessage,
+		// 	})
+		// )
+		notification('success',`Congratulation\n${popupMessage}`);
 
 		// alert('trx successful', trx.transactionHash);
 	} catch (err) {
@@ -346,14 +350,18 @@ export const getUserDeposits = async () => {
 };
 
 export const getUpdatedLength = async (theWheelOfReturns,prevLength,userAddress)=>{
-
+	console.log('prevLength',prevLength);
 	const totalUserDeposits = await theWheelOfReturns.methods
 	.getUserAmountOfSpins(userAddress)
 	.call();
 	if(parseInt(totalUserDeposits)>prevLength){
+		console.log('New Length',parseInt(totalUserDeposits));
 		return parseInt(totalUserDeposits);
 	}else{
-		return getUpdatedLength(theWheelOfReturns,prevLength,userAddress);
+		setTimeout(()=>{
+			return getUpdatedLength(theWheelOfReturns,prevLength,userAddress);
+		},5000)
+		
 	}
 }
 
