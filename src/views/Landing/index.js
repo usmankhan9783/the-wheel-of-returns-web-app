@@ -177,7 +177,7 @@ export default function Landing() {
                     value={investAmount}
                     onChange={(e)=>setInvestAmount(e.target.value)}
                     /><span className='label'>AVAX</span>
-                  <button className='btn' onClick={()=>spinButtonHandler()}>Spin</button>
+                  {/* <button className='btn' onClick={()=>spinButtonHandler()}>Spin</button> */}
                 </div>
               </figure>
             </div>
@@ -262,11 +262,11 @@ export default function Landing() {
               {
                 state?.userAddress &&
                   <>
-                  <p className='para'>{`https://wheelofreturns.io/?ref=${state?.userAddress}`}</p>
+                  <p className='para'>{`https://thewheelofreturns.io/?ref=${state?.userAddress}`}</p>
                   <button
                    className='spin-btn'
                    onClick={() => {
-                    const text = `https://wheelofreturns.io/?ref=${state?.userAddress}`;
+                    const text = `https://thewheelofreturns.io/?ref=${state?.userAddress}`;
                     navigator.clipboard.writeText(text);
                     notification('success','Copied successfully')
                   }}
